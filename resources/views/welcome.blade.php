@@ -297,7 +297,7 @@
                         </div>
                         <!-- Submit Button -->
                         <div class="text-center">
-                            <button type="submit"
+                            <button type="button" onclick="submitOrder()"
                                 class="px-6 py-3 bg-violet-500 text-white font-bold rounded-lg shadow-md hover:bg-violet-600 transition">
                                 Submit Order
                             </button>
@@ -329,7 +329,11 @@
 
     <!-- JavaScript -->
     <script>
-        // Preloader with 2-second delay
+
+
+        function submitOrder(event) {
+            alert("Hulat lang kay tapuson ko pa bwas ang code");
+        }
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loadingScreen = document.getElementById('loading-screen');
