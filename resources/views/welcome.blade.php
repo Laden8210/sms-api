@@ -293,6 +293,7 @@
                             <label for="size" class="block text-lg font-semibold mb-2">Select Size</label>
                             <select id="size" name="size" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
                                 <option value="" disabled selected>Select Size</option>
+                                <option value="XS">XS</option>
                                 <option value="Small">Small</option>
                                 <option value="Medium">Medium</option>
                                 <option value="Large">Large</option>
