@@ -24,10 +24,9 @@ class LoginController extends Controller
         $user = UserFiend::where('contact_number', $request->phone)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            // Login successful
+
             Auth::login($user);
 
-            // Send SMS notification for successful login
             $message = "Hello, {$user->name}! You have successfully logged into your FIEND account. Your adventure awaits!";
             SMS::create([
                 'phone_number' => $user->contact_number,

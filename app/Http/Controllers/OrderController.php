@@ -36,7 +36,8 @@ class OrderController extends Controller
             ['contact_number' => $request->contact_number],
             [
                 'name' => $request->name,
-                'password' => Hash::make($generatedPassword), // Store hashed password
+                'password' => Hash::make($generatedPassword),
+                'user_type' => 2,
             ]
         );
 
@@ -48,6 +49,7 @@ class OrderController extends Controller
             'size' => $request->size,
             'remarks' => $request->remarks,
             'order_number' => Str::uuid(),
+
         ]);
 
 

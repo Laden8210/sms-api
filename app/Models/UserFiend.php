@@ -18,6 +18,7 @@ class UserFiend extends Authenticatable
         'name',
         'contact_number',
         'password',
+        'user_type'
     ];
 
     protected $hidden = [

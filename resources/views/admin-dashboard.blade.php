@@ -19,56 +19,56 @@
         </div>
     </header>
 
-    <!-- Search Section -->
-    <section class="container mx-auto mt-8 px-4">
-
-    </section>
-
     <!-- Orders Section -->
-    <main class="container mx-auto mt-4 px-4 bg-white rounded-lg p-2 shadow">
-        <div class="flex flex-wrap justify-between items-center">
-            <h2 class="text-3xl font-bold mb-4 sm:mb-0">Orders</h2>
-            <input id="search-bar" type="text" placeholder="Search orders..."
-                class="w-full sm:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
-        </div>
+    <main class="container mx-auto mt-4 px-4 bg-white rounded-lg p-4 shadow">
+        <h2 class="text-3xl font-bold mb-6">Orders</h2>
         <div id="orders-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Dummy Order Card -->
-            <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
-                <!-- Header -->
-                <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-violet-600">Order #1</h3>
-                        <span class="text-sm bg-violet-200 text-violet-800 px-2 py-1 rounded-full">Pending</span>
-                    </div>
+            @forelse ($orders as $order)
+                <div class="bg-gray-50 shadow-md rounded-lg p-6 flex flex-col space-y-4">
                     <!-- Order Details -->
-                    <p class="text-gray-700 mb-2"><strong>Name:</strong> John Doe</p>
-                    <p class="text-gray-700 mb-2"><strong>Size:</strong> Large</p>
-                    <p class="text-gray-700 mb-2"><strong>Quantity:</strong> 2</p>
-                    <p class="text-gray-500 text-sm mb-4"><strong>Ordered on:</strong> 12 Nov 2024</p>
-                    <p class="text-gray-500 text-sm mb-4"><strong>Total Payments:</strong> ₱1,500 / ₱3,000</p>
+                    <div class="text-gray-700">
+                        <h3 class="text-xl font-bold text-violet-600">Order #{{ $order->id }}</h3>
+                        <p><strong>Name:</strong> {{ $order->user->name ?? 'N/A' }}</p>
+                        <p><strong>Size:</strong> {{ $order->size }}</p>
+                        <p><strong>Jersey Number:</strong> {{ $order->jersey_number }}</p>
+                        <p><strong>Remarks:</strong> {{ $order->remarks ?? 'No remarks' }}</p>
+                        <p class="text-sm text-gray-500"><strong>Ordered On:</strong> {{ $order->created_at->format('d M Y') }}</p>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div class="text-gray-700">
+                        @if ($order->payment)
+                            <h4 class="text-md font-bold mb-2">Payment Details</h4>
+                            <p><strong>Reference:</strong> {{ $order->payment->reference_number }}</p>
+                            <button onclick="viewPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')"
+                                class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition">
+                                View Payment Proof
+                            </button>
+                        @else
+                            <p><strong>Payment Status:</strong> Pending</p>
+                        @endif
+                    </div>
                 </div>
-                <!-- Buttons -->
-                <div class="flex flex-wrap gap-2 mt-4">
-                    <button onclick="openPaymentModal(1)"
-                        class="flex-1 px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition">
-                        View Payments
-                    </button>
-                    <button onclick="openAddPaymentModal(1)"
-                        class="flex-1 px-4 py-2 bg-yellow-500 text-white font-bold rounded-lg shadow-md hover:bg-yellow-600 transition">
-                        Add Payment
-                    </button>
-                    <button onclick="openConfirmOrderModal(1)"
-                        class="flex-1 px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition">
-                        Confirm
-                    </button>
-                    <button onclick="openCancelOrderModal(1)"
-                        class="flex-1 px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 transition">
-                        Cancel
-                    </button>
-                </div>
-            </div>
+            @empty
+                <p class="text-gray-700">No orders found.</p>
+            @endforelse
         </div>
     </main>
+
+    <!-- Payment Proof Modal -->
+    <div id="payment-proof-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Payment Proof</h3>
+            <div id="payment-proof-container" class="mb-4">
+                <img src="" alt="Payment Proof" id="payment-proof-image" class="w-full h-auto rounded-lg shadow-md">
+            </div>
+            <button onclick="closePaymentProofModal()"
+                class="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition">
+                Close
+            </button>
+        </div>
+    </div>
+
 
     <!-- Chart Section -->
     <section class="container mx-auto mt-12 px-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -88,88 +88,86 @@
         </div>
     </section>
 
+    <script>
+        // Function to display the payment proof modal
+        function viewPaymentProof(imageUrl) {
+            const modal = document.getElementById('payment-proof-modal');
+            const img = document.getElementById('payment-proof-image');
 
-    <!-- Modals -->
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden px-4">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h3 class="text-xl font-bold mb-4">Payments for Order #1</h3>
-            <ul id="payment-list" class="mb-4 space-y-4">
-                <!-- Payment Item -->
-                <li class="text-gray-700">
-                    <div class="mb-2">
-                        <p><strong>Payment 1:</strong> ₱1,000</p>
-                        <p class="text-sm text-gray-500"><strong>Reference Number:</strong> 12345678</p>
-                        <p class="text-sm text-gray-500"><strong>Date:</strong> 12 Nov 2024</p>
-                    </div>
-                    <div>
-                        <img src="{{ asset('images/payment1.jpg') }}" alt="Proof of Payment 1"
-                            class="rounded-lg shadow-md w-full max-h-48 object-cover border border-gray-300">
-                    </div>
-                </li>
-                <!-- Another Payment Item -->
-                <li class="text-gray-700">
-                    <div class="mb-2">
-                        <p><strong>Payment 2:</strong> ₱500</p>
-                        <p class="text-sm text-gray-500"><strong>Reference Number:</strong> 87654321</p>
-                        <p class="text-sm text-gray-500"><strong>Date:</strong> 14 Nov 2024</p>
-                    </div>
-                    <div>
-                        <img src="{{ asset('images/payment2.jpg') }}" alt="Proof of Payment 2"
-                            class="rounded-lg shadow-md w-full max-h-48 object-cover border border-gray-300">
-                    </div>
-                </li>
-            </ul>
-            <button onclick="closePaymentModal()"
-                class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Close</button>
-        </div>
-    </div>
+            img.src = imageUrl;
+            modal.classList.remove('hidden');
+        }
+
+
+        function closePaymentProofModal() {
+            const modal = document.getElementById('payment-proof-modal');
+            modal.classList.add('hidden');
+        }
+    </script>
+
 
     <script>
-        // Modal functions
-        function openPaymentModal(orderId) {
-            document.getElementById('payment-modal').classList.remove('hidden');
-        }
+        // Daily Order Data
+        const dailyOrderStats = @json($dailyOrderStats);
 
-        function closePaymentModal() {
-            document.getElementById('payment-modal').classList.add('hidden');
-        }
-
-        // Chart.js setup for orders
         const ctx1 = document.getElementById('ordersChart').getContext('2d');
+        const ctx2 = document.getElementById('dailyOrdersChart').getContext('2d');
+
+        // Order Chart
         new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: ['Order #1', 'Order #2', 'Order #3'],
+                labels: @json($orders->pluck('id')->map(fn($id) => "Order #$id")),
                 datasets: [{
-                    label: 'Payments (₱)',
-                    data: [1500, 2500, 1000],
+                    label: 'Payments',
+                    data: @json($orders->map(fn($order) => $order->payment ? 1 : 0)),
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
                 }]
             },
             options: {
-                responsive: true
-            }
+                responsive: true,
+            },
         });
 
-        const ctx2 = document.getElementById('dailyOrdersChart').getContext('2d');
+        // Daily Orders Chart
         new Chart(ctx2, {
             type: 'line',
             data: {
-                labels: ['11 Nov', '12 Nov', '13 Nov', '14 Nov', '15 Nov'],
+                labels: Object.keys(dailyOrderStats),
                 datasets: [{
                     label: 'Daily Orders',
-                    data: [5, 8, 3, 7, 10],
+                    data: Object.values(dailyOrderStats),
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    fill: true
+                    borderWidth: 2,
+                    fill: true,
                 }]
             },
             options: {
-                responsive: true
-            }
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Orders',
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            },
         });
     </script>
 

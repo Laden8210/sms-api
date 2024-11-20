@@ -41,7 +41,6 @@
 
 
 
-    <!-- Orders Section -->
     <main class="container mx-auto mt-8 px-4">
         <h2 class="text-3xl font-bold mb-6">Orders</h2>
         <button onclick="openOrderModal()"
@@ -53,7 +52,7 @@
                 <div class="bg-white shadow-md rounded-lg p-6 flex flex-col md:flex-row gap-6">
                     <!-- Order Details Section -->
                     <div class="flex-1">
-                        <h3 class="text-xl font-bold text-violet-600 mb-2">Order #{{ $order->id }}</h3>
+                        <p class=" font-bold text-violet-600 mb-2">Order #: <br> {{ $order->order_number }}</p>
                         <p class="text-gray-700 mb-2"><strong>Jersey Name:</strong> {{ $order->jersey_name }}</p>
                         <p class="text-gray-700 mb-2"><strong>Size:</strong> {{ $order->size }}</p>
                         <p class="text-gray-700 mb-2"><strong>Jersey Number:</strong> {{ $order->jersey_number }}</p>

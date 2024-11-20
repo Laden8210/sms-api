@@ -11,6 +11,13 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
+
+        $user = Auth::user();
+
+        if ($user) {
+
+            return redirect()->route('dashboard');
+        }
         return view('login');
     }
 
@@ -40,15 +47,47 @@ class AuthController extends Controller
             ->where('user_id', $user->id)
             ->get();
 
+        if ($user->user_type === 2) {
+            return redirect()->route('admin');
+        }
+
         return view('dashboard', compact('orders'));
     }
 
 
-    public function logout(){
+    public function logout()
+    {
         return null;
     }
 
-    public function admin(){
-        return view ('admin-dashboard');
+    public function admin()
+    {
+        // Retrieve all orders with related payments
+        $orders = Order::with('payment')->latest()->get();
+
+        // Calculate daily orders for the last 7 days
+        $dailyOrders = Order::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit(7)
+            ->get()
+            ->pluck('count', 'date')
+            ->toArray();
+
+        // Ensure all days are represented
+        $startDate = now()->subDays(6);
+        $endDate = now();
+        $dailyOrderStats = collect();
+
+        for ($date = $startDate; $date <= $endDate; $date->addDay()) {
+            $formattedDate = $date->format('Y-m-d');
+            $dailyOrderStats->put($formattedDate, $dailyOrders[$formattedDate] ?? 0);
+        }
+
+        // Pass data to the view
+        return view('admin-dashboard', [
+            'orders' => $orders,
+            'dailyOrderStats' => $dailyOrderStats,
+        ]);
     }
 }
