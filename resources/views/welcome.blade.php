@@ -252,6 +252,10 @@
                 <!-- Order Form -->
                 <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-full lg:w-1/2">
                     <h3 class="text-3xl font-bold text-center mb-6 text-violet-400">Place Your Order</h3>
+                    <p class="text-center mb-6 text-lg text-gray-300">
+                        Each jersey is priced at <span class="text-violet-500 font-bold">₱350</span>. Customize it to your liking!
+                    </p>
+
                     <form id="orderFormElement" onsubmit="submitOrder(event)">
                         <div class="mb-6">
                             <label for="name" class="block text-lg font-semibold mb-2">Your Name</label>
