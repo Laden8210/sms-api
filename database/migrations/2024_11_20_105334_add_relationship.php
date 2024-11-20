@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::table('orders', function (Blueprint $table) {
+    //    Schema::table('orders', function (Blueprint $table) {
 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    //         $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
 
-        });
+    //     });
     }
 
     /**
