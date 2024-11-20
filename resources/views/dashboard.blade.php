@@ -10,7 +10,17 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .loader {
+            border-width: 4px;
+            border-top-color: #4f46e5;
+            border-right-color: transparent;
+            border-bottom-color: #4f46e5;
+            border-left-color: transparent;
+        }
+    </style>
 </head>
+
 
 <body class="bg-gray-100 text-gray-800">
 
@@ -18,7 +28,7 @@
     <header class="bg-violet-800 text-white py-4">
         <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
             <h1 class="text-2xl font-bold">FIEND Dashboard</h1>
-            <a href="{{route('logout')}}"
+            <a href="{{ route('logout') }}"
                 class="mt-2 sm:mt-0 px-4 py-2 bg-white text-violet-800 rounded-lg hover:bg-gray-200">Logout</a>
         </div>
     </header>
@@ -60,7 +70,8 @@
                         <p class="text-gray-500 text-sm mb-4"><strong>Ordered on:</strong>
                             {{ $order->created_at->format('d M Y') }}</p>
                         <div class="flex gap-2 mt-4">
-                            <button onclick="openEditModal('{{ $order->jersey_name }}', '{{ $order->size }}', {{ $order->jersey_number }}, {{ $order->id }}, '{{ $order->remarks }}')"
+                            <button
+                                onclick="openEditModal('{{ $order->jersey_name }}', '{{ $order->size }}', {{ $order->jersey_number }}, {{ $order->id }}, '{{ $order->remarks }}')"
                                 class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition">
                                 Edit
                             </button>
@@ -68,6 +79,12 @@
                                 class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition">
                                 Pay
                             </button>
+
+                            <button onclick="deleteOrder({{ $order->id }})"
+                                class="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 transition">
+                                Delete
+                            </button>
+
                         </div>
                     </div>
 
@@ -75,12 +92,12 @@
                     <div class="flex-1 bg-gray-100 p-4 rounded-lg text-gray-700">
                         @if ($order->payment && $order->payment->payment_proof)
                             <h4 class="text-md font-bold mb-2">Payment Details</h4>
-                            <p class="mb-2"><strong>Reference Number:</strong> {{ $order->payment->reference_number }}</p>
+                            <p class="mb-2"><strong>Reference Number:</strong>
+                                {{ $order->payment->reference_number }}</p>
                             <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Payment Proof"
                                 class="w-full h-auto rounded-lg shadow-md">
                         @else
                             <h4 class="text-md font-bold text-red-500 mb-2">Payment Pending</h4>
-
                         @endif
                     </div>
                 </div>
@@ -156,6 +173,9 @@
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
                         <option value="XL">XL</option>
+                        <option value="2XL">2XL</option>
+                        <option value="3XL">3XL</option>
+                        <option value="4XL">4XL</option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -192,7 +212,7 @@
             <h3 class="text-xl font-bold mb-4">Process Payment</h3>
             <p id="payment-details" class="text-gray-700 mb-4"></p>
             <div class="flex flex-col items-center mb-4">
-                <img src="{{ asset('storage/QR.jpg' ) }}" alt="QR Code" class="w-64 mb-4">
+                <img src="{{ asset('storage/QR.jpg') }}" alt="QR Code" class="w-64 mb-4">
             </div>
             <div class="mb-4">
                 <label for="reference-number" class="block text-sm font-semibold mb-2">Enter Reference Number</label>
@@ -233,7 +253,10 @@
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
                         <option value="XL">XL</option>
+
                         <option value="2XL">2XL</option>
+                        <option value="3XL">3XL</option>
+                        <option value="4XL">4XL</option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -255,19 +278,19 @@
         </div>
     </div>
 
+    <div id="ajax-loader" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="loader border-t-4 border-b-4 border-violet-500 rounded-full w-16 h-16 animate-spin"></div>
+    </div>
 
     <script>
-        // Open Order Modal
         function openOrderModal() {
             document.getElementById('order-modal').classList.remove('hidden');
         }
 
-        // Close Order Modal
         function closeOrderModal() {
             document.getElementById('order-modal').classList.add('hidden');
         }
 
-        // Submit Order via AJAX
         function submitOrder() {
             const jerseyName = document.getElementById('jersey-name').value;
             const size = document.getElementById('size').value;
@@ -309,7 +332,7 @@
                 },
             });
         }
-        // Open Edit Modal
+
         function openEditModal(name, size, jerseyNumber, orderId, remarks) {
             document.getElementById('edit-name').value = name;
             document.getElementById('edit-size').value = size;
@@ -318,7 +341,7 @@
             document.getElementById('edit-remarks').value = remarks;
             document.getElementById('edit-modal').classList.remove('hidden');
         }
-        // Save Edited Order via AJAX
+
         function saveEditOrder() {
             const orderId = document.getElementById('edit-order-id').value;
             const name = document.getElementById('edit-name').value;
@@ -363,19 +386,16 @@
             });
         }
 
-        // Close Edit Modal
         function closeEditModal() {
             document.getElementById('edit-modal').classList.add('hidden');
         }
 
-        // Open Payment Modal
         function openPaymentModal(name, orderId) {
             document.getElementById('payment-details').textContent = `Processing payment for ${name} (Order #${orderId})`;
             document.getElementById('payment-details').dataset.orderId = orderId;
             document.getElementById('payment-modal').classList.remove('hidden');
         }
 
-        // Submit Payment via AJAX
         function submitPayment() {
             const orderId = document.getElementById('payment-details').dataset.orderId;
             const referenceNumber = document.getElementById('reference-number').value;
@@ -403,30 +423,63 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Payment Submitted',
-                            text: response.message,
-                        }).then(() => location.reload());
-                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Submitted',
+                        text: response.message,
+                    }).then(() => location.reload());
                 },
                 error: function(xhr) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Payment Failed',
-                        text: xhr.responseJSON?.message ||
-                            'An error occurred while submitting the payment.',
+                        text: xhr.responseJSON?.message || 'An error occurred while submitting the payment.',
                     });
                 },
             });
         }
 
-        // Close Payment Modal
         function closePaymentModal() {
             document.getElementById('payment-modal').classList.add('hidden');
         }
+
+        function deleteOrder(orderId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/orders/${orderId}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response.message,
+                            }).then(() => location.reload());
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: xhr.responseJSON?.message || 'An error occurred while deleting the order.',
+                            });
+                        }
+                    });
+                }
+            });
+        }
     </script>
+
 </body>
 
 </html>

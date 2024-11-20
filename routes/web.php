@@ -23,3 +23,5 @@ Route::post('/payments/submit', [OrderController::class, 'submitPayment'])->name
 Route::post('/create-order', [OrderController::class, 'createOrder'])->name('createOrder');
 Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders/download-all', [OrderController::class, 'downloadAllOrders'])->name('orders.download-all');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+

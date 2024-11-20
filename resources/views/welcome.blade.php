@@ -95,6 +95,16 @@
             }
         }
     </style>
+
+        <style>
+            .loader {
+                border-width: 4px;
+                border-top-color: #4f46e5;
+                border-right-color: transparent;
+                border-bottom-color: #4f46e5;
+                border-left-color: transparent;
+            }
+        </style>
 </head>
 
 <body class="text-white">
@@ -107,6 +117,12 @@
             <div class="spinner mt-4 m-auto"></div>
         </div>
     </div>
+
+    <div id="ajax-loader" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="loader border-t-4 border-b-4 border-violet-500 rounded-full w-16 h-16 animate-spin"></div>
+    </div>
+
+
 
     <script>
         // List of Random Quotes
@@ -320,9 +336,7 @@
 
     <!-- JavaScript -->
     <script>
-        function submitOrder(event) {
-            alert("Hulat lang kay tapuson ko pa bwas ang code");
-        }
+
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loadingScreen = document.getElementById('loading-screen');
@@ -370,7 +384,7 @@ function submitOrder(event) {
         });
         return;
     }
-
+    $('#ajax-loader').removeClass('hidden');
     // AJAX Submission
     const formData = {
         name,
@@ -387,6 +401,7 @@ function submitOrder(event) {
         type: "POST",
         data: formData,
         success: function (response) {
+            $('#ajax-loader').addClass('hidden');
             if (response.success) {
                 Swal.fire({
                     icon: 'success',
@@ -397,6 +412,7 @@ function submitOrder(event) {
             }
         },
         error: function (xhr) {
+            $('#ajax-loader').addClass('hidden');
             const errors = xhr.responseJSON.errors;
             let errorMessages = '';
             for (let key in errors) {

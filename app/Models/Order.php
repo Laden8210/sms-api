@@ -22,4 +22,8 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class, 'order_id');
     }
+
+    public function user(){
+        return $this->hasOne(UserFiend::class, 'id', 'user_id');
+    }
 }

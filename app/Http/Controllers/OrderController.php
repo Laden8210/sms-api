@@ -11,6 +11,7 @@ use App\Models\SMS;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 class OrderController extends Controller
 {
     public function createOrder(Request $request)
@@ -111,6 +112,8 @@ class OrderController extends Controller
 
         // Send SMS notification for payment submission
         $order = Order::findOrFail($request->order_id);
+
+
         $message = "Your payment for Order #{$order->id} has been received. Reference: {$request->reference_number}. Thank you for powering up with FIEND!";
         SMS::create([
             'phone_number' => $order->user->contact_number,
@@ -144,11 +147,16 @@ class OrderController extends Controller
         ]);
 
 
-        $message = "Thank you, {$user->name}! Your new order #{$order->id} has been created. Jersey: {$order->jersey_name}, Size: {$order->size}. FIEND is honored to assist your guild!";
-        SMS::create([
-            'phone_number' => $user->contact_number,
-            'message' => $message,
-        ]);
+        $current_user = UserFiend::where('id', $user->id)->first();
+
+        if ($current_user) {
+            $message = "Thank you, {$current_user->name}! Your new order #{$order->id} has been created. Jersey: {$order->jersey_name}, Size: {$order->size}. FIEND is honored to assist your guild!";
+            SMS::create([
+                'phone_number' => $current_user->contact_number,
+                'message' => $message,
+            ]);
+        }
+
 
         return response()->json([
             'success' => true,
@@ -163,6 +171,37 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('all-orders-pdf', compact('orders'));
 
         return $pdf->download("All_Orders.pdf");
+    }
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Check and delete associated payment
+        if ($order->payment) {
+            $order->payment->delete();
+        }
+
+
+        $user = Auth::user();
+        $current_user = UserFiend::where('id', $user->id)->first();
+
+        if ($current_user) {
+
+            $message = "Hello, {$current_user->name}. Your order #{$order->id} for Jersey: {$order->jersey_name}, Size: {$order->size}, has been canceled. Thank you for trusting FIEND. Feel free to place a new order anytime!";
+            SMS::create([
+                'phone_number' => $current_user->contact_number,
+                'message' => $message,
+            ]);
+        }
+
+        // Delete the order
+        $order->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order deleted successfully.',
+        ]);
     }
 
 }

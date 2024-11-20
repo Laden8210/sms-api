@@ -84,7 +84,16 @@ class AuthController extends Controller
             $dailyOrderStats->put($formattedDate, $dailyOrders[$formattedDate] ?? 0);
         }
 
-        // Pass data to the view
+        $user = Auth::user();
+
+        if(!$user){
+            return redirect()->route('login');
+        }
+
+
+        if ($user->user_type === 1) {
+            return redirect()->route('dashboard');
+        }
         return view('admin-dashboard', [
             'orders' => $orders,
             'dailyOrderStats' => $dailyOrderStats,
