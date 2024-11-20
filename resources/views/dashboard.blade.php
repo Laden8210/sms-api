@@ -172,6 +172,7 @@
                     <label for="edit-size" class="block text-sm font-semibold mb-2">Size</label>
                     <select id="edit-size"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                        <option value="XS">XS</option>
                         <option value="Small">Small</option>
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
@@ -252,6 +253,7 @@
                     <label for="edit-size" class="block text-sm font-semibold mb-2">Size</label>
                     <select id="edit-size"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                        <option value="XS">XS</option>
                         <option value="Small">Small</option>
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
