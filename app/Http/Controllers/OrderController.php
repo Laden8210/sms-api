@@ -126,7 +126,7 @@ class OrderController extends Controller
         $request->validate([
             'jersey_name' => 'required|string|max:255',
             'size' => 'required|string',
-            'jersey_number' => 'required|integer|min:1',
+            'jersey_number' => 'required|min:1',
             'remarks' => 'nullable|string|max:500',
         ]);
 
