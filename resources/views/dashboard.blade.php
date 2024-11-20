@@ -93,11 +93,12 @@
                     <div class="flex-1 bg-gray-100 p-4 rounded-lg text-gray-700">
                         @if ($order->payment && $order->payment->payment_proof)
                             <h4 class="text-md font-bold mb-2">Payment Details</h4>
-                            <p class="mb-2"><strong>Reference Number:</strong>
-                                {{ $order->payment->reference_number }}</p>
-                            <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Payment Proof"
-                                class="w-full h-40 rounded-lg shadow-md cursor-pointer"
+                            <p class="mb-2"><strong>Reference Number:</strong> {{ $order->payment->reference_number }}</p>
+                            <button
+                                class="px-4 py-2 bg-violet-500 text-white font-bold rounded-lg shadow-md hover:bg-violet-600 transition"
                                 onclick="showPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')">
+                                View Payment Proof
+                            </button>
                         @else
                             <h4 class="text-md font-bold text-red-500 mb-2">Payment Pending</h4>
                         @endif
