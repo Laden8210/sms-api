@@ -89,23 +89,45 @@
                     </div>
 
                     <!-- Payment Details Section -->
+                    <!-- Payment Details Section -->
                     <div class="flex-1 bg-gray-100 p-4 rounded-lg text-gray-700">
                         @if ($order->payment && $order->payment->payment_proof)
                             <h4 class="text-md font-bold mb-2">Payment Details</h4>
                             <p class="mb-2"><strong>Reference Number:</strong>
                                 {{ $order->payment->reference_number }}</p>
                             <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Payment Proof"
-                                class="w-full h-auto rounded-lg shadow-md">
+                                class="w-full h-auto rounded-lg shadow-md cursor-pointer"
+                                onclick="showPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')">
                         @else
                             <h4 class="text-md font-bold text-red-500 mb-2">Payment Pending</h4>
                         @endif
                     </div>
+
                 </div>
             @empty
                 <p class="text-gray-700">No orders found.</p>
             @endforelse
         </div>
     </main>
+
+    <div id="payment-proof-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden px-4">
+        <div
+            class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md md:max-w-lg lg:max-w-xl max-h-[90vh] overflow-auto">
+            <h3 class="text-xl font-bold mb-4 text-center">Payment Proof</h3>
+            <div id="payment-proof-container" class="mb-4 flex justify-center">
+                <img src="" alt="Payment Proof" id="payment-proof-image"
+                    class="max-w-full max-h-[70vh] rounded-lg shadow-md object-contain">
+            </div>
+            <div class="text-center">
+                <button onclick="closePaymentProofModal()"
+                    class="px-6 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 
     <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
@@ -216,7 +238,7 @@
             <h3 class="text-xl font-bold mb-4">Process Payment</h3>
             <p id="payment-details" class="text-gray-700 mb-4"></p>
             <div class="flex flex-col items-center mb-4">
-                <img src="{{ asset('storage/QR.jpg')  }}" alt="QR Code" class="w-64 mb-4">
+                <img src="{{ asset('storage/QR.jpg') }}" alt="QR Code" class="w-64 mb-4">
             </div>
             <div class="mb-4">
                 <label for="reference-number" class="block text-sm font-semibold mb-2">Enter Reference Number</label>
@@ -288,6 +310,19 @@
     </div>
 
     <script>
+        function showPaymentProof(imageSrc) {
+            const modal = document.getElementById('payment-proof-modal');
+            const image = document.getElementById('payment-proof-image');
+
+            image.src = imageSrc;
+            modal.classList.remove('hidden');
+        }
+
+        function closePaymentProofModal() {
+            const modal = document.getElementById('payment-proof-modal');
+            modal.classList.add('hidden');
+        }
+
         function openOrderModal() {
             document.getElementById('order-modal').classList.remove('hidden');
         }
@@ -438,7 +473,8 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Payment Failed',
-                        text: xhr.responseJSON?.message || 'An error occurred while submitting the payment.',
+                        text: xhr.responseJSON?.message ||
+                            'An error occurred while submitting the payment.',
                     });
                 },
             });
@@ -476,7 +512,8 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: xhr.responseJSON?.message || 'An error occurred while deleting the order.',
+                                text: xhr.responseJSON?.message ||
+                                    'An error occurred while deleting the order.',
                             });
                         }
                     });
