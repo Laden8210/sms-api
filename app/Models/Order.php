@@ -17,4 +17,9 @@ class Order extends Model
         'remarks',
         'order_number',
     ];
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'order_id');
+    }
 }

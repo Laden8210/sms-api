@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserFiend extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class UserFiend extends Authenticatable
 {
     use HasFactory;
     use HasFactory;
