@@ -73,12 +73,14 @@ class OrderController extends Controller
             'jersey_name' => 'required|string|max:255',
             'size' => 'required|string',
             'jersey_number' => 'required|integer|min:1',
+            'remarks' =>'required|string|max:255'
         ]);
 
         $order = Order::findOrFail($request->order_id);
         $order->jersey_name = $request->jersey_name;
         $order->size = $request->size;
         $order->jersey_number = $request->jersey_number;
+        $order->remarks = $request->remarks;
         $order->save();
 
 
