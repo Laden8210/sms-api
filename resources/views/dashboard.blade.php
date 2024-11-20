@@ -215,7 +215,7 @@
             <h3 class="text-xl font-bold mb-4">Process Payment</h3>
             <p id="payment-details" class="text-gray-700 mb-4"></p>
             <div class="flex flex-col items-center mb-4">
-                <img src="{{ asset('storage/QR.jpg') }}" alt="QR Code" class="w-64 mb-4">
+                <img src="{{ asset('storage/QR.jpg'  }}" alt="QR Code" class="w-64 mb-4">
             </div>
             <div class="mb-4">
                 <label for="reference-number" class="block text-sm font-semibold mb-2">Enter Reference Number</label>
