@@ -38,7 +38,7 @@ class OrderController extends Controller
             [
                 'name' => $request->name,
                 'password' => Hash::make($generatedPassword),
-                'user_type' => 2,
+                'user_type' => 1,
             ]
         );
 
