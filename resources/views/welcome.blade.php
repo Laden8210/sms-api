@@ -128,33 +128,25 @@
     <!-- Header -->
     <header class="bg-violet-800 shadow-lg fixed top-0 left-0 w-full z-20">
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <!-- Logo Section -->
             <div class="flex items-center">
                 <img src="{{ asset('images/feind-logo.webp') }}" alt="FIEND Logo" class="w-12 h-12 mr-4">
                 <h1 class="text-3xl font-bold">FIEND</h1>
             </div>
-            <nav class="hidden lg:flex space-x-6">
-                <a href="#mission" class="hover:text-violet-400">Mission</a>
-                <a href="#design" class="hover:text-violet-400">Design</a>
-                <a href="#gallery" class="hover:text-violet-400">Gallery</a>
-                <a href="#about" class="hover:text-violet-400">About</a>
-                <a href="#contact" class="hover:text-violet-400">Contact</a>
-            </nav>
-            <button id="menu-toggle" class="lg:hidden text-white focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M3 5h14a1 1 0 010 2H3a1 1 0 010-2zm0 4h14a1 1 0 010 2H3a1 1 0 010-2zm0 4h14a1 1 0 010 2H3a1 1 0 010-2z"
-                        clip-rule="evenodd" />
-                </svg>
-            </button>
+
+
+            <div class=" lg:flex items-center">
+                <a href="{{ route('login') }}"
+                    class="px-4 py-2 bg-white text-violet-800 font-bold rounded-lg shadow-md hover:bg-gray-200 transition">
+                    Login
+                </a>
+            </div>
+
+
         </div>
-        <nav id="mobile-menu" class="hidden bg-violet-700 lg:hidden">
-            <a href="#mission" class="block px-4 py-2 hover:bg-violet-600">Mission</a>
-            <a href="#design" class="block px-4 py-2 hover:bg-violet-600">Design</a>
-            <a href="#gallery" class="block px-4 py-2 hover:bg-violet-600">Gallery</a>
-            <a href="#about" class="block px-4 py-2 hover:bg-violet-600">About</a>
-            <a href="#contact" class="block px-4 py-2 hover:bg-violet-600">Contact</a>
-        </nav>
+
     </header>
+
 
     <!-- Main Content -->
     <main>
@@ -261,48 +253,43 @@
                 <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8 w-full lg:w-1/2">
                     <h3 class="text-3xl font-bold text-center mb-6 text-violet-400">Place Your Order</h3>
                     <form id="orderFormElement" onsubmit="submitOrder(event)">
-                        <!-- Name Input -->
                         <div class="mb-6">
                             <label for="name" class="block text-lg font-semibold mb-2">Your Name</label>
-                            <input type="text" id="name" name="name" required
-                                class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                            <input type="text" id="name" name="name" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
                         </div>
-                        <!-- Email Input -->
                         <div class="mb-6">
-                            <label for="text" class="block text-lg font-semibold mb-2">Your Phone Number</label>
-                            <input type="text" id="text" name="text" required
-                                class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                            <label for="contact_number" class="block text-lg font-semibold mb-2">Your Phone Number</label>
+                            <input type="text" id="contact_number" name="contact_number" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
                         </div>
-
+                        <div class="mb-6">
+                            <label for="jersey_name" class="block text-lg font-semibold mb-2">Jersey Name</label>
+                            <input type="text" id="jersey_name" name="jersey_name" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                        </div>
+                        <div class="mb-6">
+                            <label for="jersey_number" class="block text-lg font-semibold mb-2">Jersey Number</label>
+                            <input type="number" id="jersey_number" name="jersey_number" min="1" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                        </div>
                         <div class="mb-6">
                             <label for="size" class="block text-lg font-semibold mb-2">Select Size</label>
-                            <select id="size" name="size" required
-                                class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                            <select id="size" name="size" required class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg">
                                 <option value="" disabled selected>Select Size</option>
                                 <option value="Small">Small</option>
                                 <option value="Medium">Medium</option>
                                 <option value="Large">Large</option>
                                 <option value="XL">XL</option>
-                                <option value="2XL">2XL</option>
-                                <option value="3XL">3XL</option>
-                                <option value="4XL">4XL</option>
-                                <option value="5XL">5XL</option>
                             </select>
                         </div>
-                        <!-- Quantity Input -->
                         <div class="mb-6">
-                            <label for="quantity" class="block text-lg font-semibold mb-2">Quantity</label>
-                            <input type="number" id="quantity" name="quantity" min="1" required
-                                class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                            <label for="remarks" class="block text-lg font-semibold mb-2">Remarks</label>
+                            <textarea id="remarks" name="remarks" class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg"></textarea>
                         </div>
-                        <!-- Submit Button -->
                         <div class="text-center">
-                            <button type="button" onclick="submitOrder()"
-                                class="px-6 py-3 bg-violet-500 text-white font-bold rounded-lg shadow-md hover:bg-violet-600 transition">
+                            <button type="submit" class="px-6 py-3 bg-violet-500 text-white font-bold rounded-lg shadow-md hover:bg-violet-600">
                                 Submit Order
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </section>
@@ -329,8 +316,6 @@
 
     <!-- JavaScript -->
     <script>
-
-
         function submitOrder(event) {
             alert("Hulat lang kay tapuson ko pa bwas ang code");
         }
@@ -347,6 +332,83 @@
             menu.classList.toggle('hidden');
         });
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function submitOrder(event) {
+    event.preventDefault();
+
+    const name = $('#name').val();
+    const contactNumber = $('#contact_number').val();
+
+    // Regex for validation
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const contactNumberRegex = /^(09|\+639)\d{9}$/;
+
+    // Validate name
+    if (!nameRegex.test(name)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Name',
+            text: 'Name should only contain letters and spaces.',
+        });
+        return;
+    }
+
+    // Validate contact number
+    if (!contactNumberRegex.test(contactNumber)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Contact Number',
+            text: 'Please enter a valid Philippine mobile number (e.g., 09123456789 or +639123456789).',
+        });
+        return;
+    }
+
+    // AJAX Submission
+    const formData = {
+        name,
+        contact_number: contactNumber,
+        jersey_name: $('#jersey_name').val(),
+        jersey_number: $('#jersey_number').val(),
+        size: $('#size').val(),
+        remarks: $('#remarks').val(),
+        _token: "{{ csrf_token() }}", // Laravel CSRF Token
+    };
+
+    $.ajax({
+        url: "{{ route('createOrder') }}",
+        type: "POST",
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed',
+                    text: response.message,
+                });
+                $('#orderFormElement')[0].reset();
+            }
+        },
+        error: function (xhr) {
+            const errors = xhr.responseJSON.errors;
+            let errorMessages = '';
+            for (let key in errors) {
+                errorMessages += `${errors[key][0]}\n`;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessages,
+            });
+        },
+    });
+}
+
+</script>
+
 </body>
 
 </html>
