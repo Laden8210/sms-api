@@ -96,7 +96,7 @@
                             <p class="mb-2"><strong>Reference Number:</strong>
                                 {{ $order->payment->reference_number }}</p>
                             <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Payment Proof"
-                                class="w-full h-20 rounded-lg shadow-md cursor-pointer"
+                                class="w-full h-40 rounded-lg shadow-md cursor-pointer"
                                 onclick="showPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')">
                         @else
                             <h4 class="text-md font-bold text-red-500 mb-2">Payment Pending</h4>
