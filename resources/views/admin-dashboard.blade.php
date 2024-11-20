@@ -64,16 +64,18 @@
 
     <!-- Payment Proof Modal -->
     <div id="payment-proof-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 class="text-xl font-bold mb-4">Payment Proof</h3>
-            <div id="payment-proof-container" class="mb-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-auto">
+            <h3 class="text-xl font-bold mb-4 text-center">Payment Proof</h3>
+            <div id="payment-proof-container" class="mb-4 flex justify-center">
                 <img src="" alt="Payment Proof" id="payment-proof-image"
-                    class="w-full h-auto rounded-lg shadow-md">
+                    class="max-w-full max-h-[70vh] rounded-lg shadow-md object-contain">
             </div>
-            <button onclick="closePaymentProofModal()"
-                class="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition">
-                Close
-            </button>
+            <div class="text-center">
+                <button onclick="closePaymentProofModal()"
+                    class="px-6 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
 
