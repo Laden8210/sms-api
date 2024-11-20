@@ -24,7 +24,7 @@ class OrderController extends Controller
                 'regex:/^(09|\+639)\d{9}$/'
             ],
             'jersey_name' => 'required|string|max:255',
-            'jersey_number' => 'required|integer|min:1',
+            'jersey_number' => 'required|min:1',
             'size' => 'required|string',
             'remarks' => 'nullable|string',
         ]);
