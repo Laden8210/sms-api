@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\SMS;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class OrderController extends Controller
 {
     public function createOrder(Request $request)
@@ -155,6 +155,14 @@ class OrderController extends Controller
             'message' => 'Order created successfully, and SMS notification sent!',
             'order' => $order,
         ]);
+    }
+    public function downloadAllOrders()
+    {
+        $orders = Order::with('payment')->get();
+
+        $pdf = Pdf::loadView('all-orders-pdf', compact('orders'));
+
+        return $pdf->download("All_Orders.pdf");
     }
 
 }

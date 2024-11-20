@@ -18,7 +18,7 @@
     <header class="bg-violet-800 text-white py-4">
         <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
             <h1 class="text-2xl font-bold">FIEND Dashboard</h1>
-            <a href="#"
+            <a href="{{route('logout')}}"
                 class="mt-2 sm:mt-0 px-4 py-2 bg-white text-violet-800 rounded-lg hover:bg-gray-200">Logout</a>
         </div>
     </header>

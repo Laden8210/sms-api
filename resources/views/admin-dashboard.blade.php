@@ -15,13 +15,18 @@
     <header class="bg-violet-800 text-white py-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">Admin Dashboard</h1>
-            <a href="#" class="px-4 py-2 bg-white text-violet-800 rounded-lg hover:bg-gray-200">Logout</a>
+            <a href="{{route('logout')}}" class="px-4 py-2 bg-white text-violet-800 rounded-lg hover:bg-gray-200">Logout</a>
         </div>
     </header>
 
     <!-- Orders Section -->
     <main class="container mx-auto mt-4 px-4 bg-white rounded-lg p-4 shadow">
         <h2 class="text-3xl font-bold mb-6">Orders</h2>
+        <button onclick="window.location.href='{{ route('orders.download-all') }}'"
+            class="px-6 py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition">
+            Download All Orders (PDF)
+        </button>
+
         <div id="orders-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @forelse ($orders as $order)
                 <div class="bg-gray-50 shadow-md rounded-lg p-6 flex flex-col space-y-4">
@@ -32,7 +37,8 @@
                         <p><strong>Size:</strong> {{ $order->size }}</p>
                         <p><strong>Jersey Number:</strong> {{ $order->jersey_number }}</p>
                         <p><strong>Remarks:</strong> {{ $order->remarks ?? 'No remarks' }}</p>
-                        <p class="text-sm text-gray-500"><strong>Ordered On:</strong> {{ $order->created_at->format('d M Y') }}</p>
+                        <p class="text-sm text-gray-500"><strong>Ordered On:</strong>
+                            {{ $order->created_at->format('d M Y') }}</p>
                     </div>
 
                     <!-- Payment Details -->
@@ -40,7 +46,8 @@
                         @if ($order->payment)
                             <h4 class="text-md font-bold mb-2">Payment Details</h4>
                             <p><strong>Reference:</strong> {{ $order->payment->reference_number }}</p>
-                            <button onclick="viewPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')"
+                            <button
+                                onclick="viewPaymentProof('{{ asset('storage/' . $order->payment->payment_proof) }}')"
                                 class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition">
                                 View Payment Proof
                             </button>
@@ -60,7 +67,8 @@
         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Payment Proof</h3>
             <div id="payment-proof-container" class="mb-4">
-                <img src="" alt="Payment Proof" id="payment-proof-image" class="w-full h-auto rounded-lg shadow-md">
+                <img src="" alt="Payment Proof" id="payment-proof-image"
+                    class="w-full h-auto rounded-lg shadow-md">
             </div>
             <button onclick="closePaymentProofModal()"
                 class="px-4 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition">
