@@ -34,6 +34,7 @@
                     <div class="text-gray-700">
                         <h3 class="text-xl font-bold text-violet-600">Order #{{ $order->id }}</h3>
                         <p><strong>Name:</strong> {{ $order->user->name ?? 'N/A' }}</p>
+                        <p><strong>Jersey Name:</strong>{{$order->jersey_name ?? 'N/A'}}</p>
                         <p><strong>Size:</strong> {{ $order->size }}</p>
                         <p><strong>Jersey Number:</strong> {{ $order->jersey_number }}</p>
                         <p><strong>Remarks:</strong> {{ $order->remarks ?? 'No remarks' }}</p>
